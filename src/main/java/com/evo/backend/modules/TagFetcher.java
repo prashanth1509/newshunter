@@ -24,16 +24,14 @@ public class TagFetcher implements Runnable {
     }
 
     public void run() {
-        System.out.println("Thread running: " +  threadName );
         try {
             while(true) {
-                System.out.println("Fetching trending tags..");
 
                 if(misses>maxMisses)
                     break;
 
                 RestTemplate restTemplate = new RestTemplate();
-                String apiURL = Endpoints.TWITTER_TRENDS;
+                String apiURL = Endpoints.getTwitterTrendsUrl();
                 List<String> tagList;
 
                 tagList = restTemplate.getForObject(apiURL, TagList.class).getTags();
@@ -51,6 +49,9 @@ public class TagFetcher implements Runnable {
                         }
                     }
                     if(!tagsToFetch.isEmpty()){
+
+                        System.out.println(tagsToFetch);
+
                         SocialTextsFetcher socialTextsFetcher = new SocialTextsFetcher("social-text-fetcher", tagsToFetch);
                         socialTextsFetcher.start();
                     }
@@ -61,7 +62,6 @@ public class TagFetcher implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Thread " +  threadName + " exiting.");
     }
 
     public void start ()

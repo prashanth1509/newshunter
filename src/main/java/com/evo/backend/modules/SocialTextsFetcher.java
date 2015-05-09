@@ -1,6 +1,8 @@
 package com.evo.backend.modules;
 
+import com.evo.backend.configs.Endpoints;
 import com.evo.backend.entities.TagList;
+import com.evo.backend.entities.TextList;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -20,16 +22,14 @@ public class SocialTextsFetcher implements Runnable {
     }
 
     public void run() {
-        System.out.println("Thread running: " +  threadName );
         try {
-            System.out.println("Fetching for tag: ");
             for(String tag: tags){
-
+                TextFetcher textFetcher = new TextFetcher("text-fetcher", tag);
+                textFetcher.start();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("Thread " +  threadName + " exiting.");
     }
 
     public void start ()
@@ -39,10 +39,6 @@ public class SocialTextsFetcher implements Runnable {
             t = new Thread (this, threadName);
             t.start ();
         }
-    }
-
-    private void getTextsForTag(String tag){
-
     }
 
 }
