@@ -26,9 +26,6 @@ public class Application extends WebMvcConfigurerAdapter{
         System.setProperty("server.port", webPort);
         SpringApplication.run(Application.class, args);
 
-        TagFetcher tagFetcher = new TagFetcher("tagFetcher");
-        tagFetcher.start();
-
     }
 
 }

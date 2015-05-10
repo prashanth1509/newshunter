@@ -17,6 +17,7 @@ public class TagFetcher implements Runnable {
 
     int misses = 0;
     int maxMisses = 5;
+    int intervalinSeconds = 30;
 
     public TagFetcher(String name){
         threadName = name;
@@ -57,7 +58,7 @@ public class TagFetcher implements Runnable {
                     }
                 }
 
-                Thread.sleep(5 * 1000);
+                Thread.sleep(intervalinSeconds * 1000);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
