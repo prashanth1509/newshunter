@@ -12,6 +12,7 @@ public class News {
     private String heading;
     private String content;
     private String image;
+    private String category;
 
     public String getId() {
         return id;
@@ -51,5 +52,13 @@ public class News {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

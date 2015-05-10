@@ -25,7 +25,9 @@ import java.util.Map;
 @RestController
 public class TextProvider {
 
-    private List<String> tags = Arrays.asList( /*"#blackandblue", "#BookBucketChallenge", "#catstairs", "#dubsmash", "#harlemshake", "#Ebola", "#Ferguson", "#Mission272", "#fifaWorldCup",*/ "#Hololens" );
+    private List<String> tags = Arrays.asList( "#blackandblue", "#BookBucketChallenge"/*, "#catstairs", "#dubsmash", "#harlemshake", "#Ebola", "#Ferguson", "#Mission272", "#fifaWorldCup", "#Hololens"*/ );
+
+    private static int count = 0;
 
     @Autowired
     private NewsRepository newsRepository;
@@ -35,6 +37,7 @@ public class TextProvider {
 
     @Autowired
     private UsersRepository usersRepository;
+
 
     @RequestMapping("/app/signup")
     public Object signup(
@@ -63,14 +66,9 @@ public class TextProvider {
         return true;
     }
 
-    @RequestMapping("/app/reset")
-    public Object reset(){
-
+    @RequestMapping("/app/generateNews")
+    public Object createNews() {
         newsRepository.deleteAll();
-        pushRepository.deleteAll();
-        usersRepository.deleteAll();
-
-
         for(String tag: tags){
             News news = new News();
             news.setTag(tag);
@@ -79,11 +77,23 @@ public class TextProvider {
             newsRepository.save(news);
         }
 
-        Users user = new Users();
-        user.setDeviceId("APA91bHkD6UWLHQiZwB26tCKxXaOMA43c31R9hnrMyMPtb_Yaivd9vnFg41czoz-BAGNGiM3AZN-UMfVhjtp7sLf4ZHSIu88y-mqphIPAvGpUPVKoqiSuqmIY4zBfUTdMjX5xS_w3V3d");
-        user.setPass("");
-        user.setName("Suseee");
-        usersRepository.save(user);
+        return true;
+    }
+
+    @RequestMapping("/app/reset")
+    public Object reset(){
+        pushRepository.deleteAll();
+        usersRepository.deleteAll();
+
+/*
+        for(String tag: tags){
+            News news = new News();
+            news.setTag(tag);
+            news.setContent("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.");
+            news.setHeading(tag.toUpperCase().replace("#",""));
+            newsRepository.save(news);
+        }
+*/
 
         return true;
     }
@@ -92,6 +102,7 @@ public class TextProvider {
     public Object twitterTrends(){
         Map<String, List<String>> trends = new HashMap();
         trends.put("tags", tags);
+        System.out.print(count++);
         return trends;
     }
 
@@ -115,7 +126,8 @@ public class TextProvider {
 
     @RequestMapping("/app/push")
     public Object push(
-        @RequestParam(value = "label", required = true) String tagId
+        @RequestParam(value = "label", required = true) String tagId,
+        @RequestParam(value = "topic", required = true) String topic
     ){
         News news = newsRepository.findByTag(tagId);
         if(news!=null && news.getId().length()>0){
@@ -123,8 +135,9 @@ public class TextProvider {
             List<Users> users = usersRepository.findAll();
             for(Users user: users){
                 PushUtils util = new PushUtils(user.getDeviceId());
-                util.setData(news.getContent());
                 util.setNewsId(news.getId());
+                util.setHashTag(tagId);
+                util.setTopic(topic);
                 util.pushMessage();
             }
         }

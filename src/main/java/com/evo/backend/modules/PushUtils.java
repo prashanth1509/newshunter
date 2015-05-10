@@ -10,9 +10,9 @@ import com.google.android.gcm.server.Sender;
 public class PushUtils {
 
     private String id;
-    private String message;
-    private String data;
     private String newsId;
+    private String topic;
+    private String hashTag;
 
     public PushUtils(String id) {
         this.id = id;
@@ -20,10 +20,13 @@ public class PushUtils {
 
     public boolean pushMessage(){
         System.out.println("Global push message");
-        Sender sender = new Sender("AIzaSyBW8m_-OAPblSRiJBRrGjAYogl31Je8V8o");
-        Message message = new Message.Builder().timeToLive(30).delayWhileIdle(true).addData("NS_MESSAGE", "test").build();
+        Sender sender = new Sender("AIzaSyDhRTGzyjvxy54VCPeSPLTZlEq5WdQ2CXc");
+
+        String multiplexed = hashTag + "," + topic + "," + newsId;
+
+        Message message = new Message.Builder().timeToLive(30).delayWhileIdle(true).addData("NS_MSG", multiplexed).build();
         try{
-            System.out.println("Message-sending: " + id);
+            System.out.println("Message-sending-to: " + id + "with content: " + multiplexed);
             Result result = sender.send(message, id, 1);
             System.out.println("Message-sent: " + result.getMessageId());
         }
@@ -38,27 +41,31 @@ public class PushUtils {
         return id;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
     public String getNewsId() {
         return newsId;
     }
 
     public void setNewsId(String newsId) {
         this.newsId = newsId;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public String getHashTag() {
+        return hashTag;
+    }
+
+    public void setHashTag(String hashTag) {
+        this.hashTag = hashTag;
     }
 }

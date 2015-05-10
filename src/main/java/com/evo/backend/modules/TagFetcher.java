@@ -16,7 +16,7 @@ public class TagFetcher implements Runnable {
     private List<String> tags;
 
     int misses = 0;
-    int maxMisses = 2;
+    int maxMisses = 5;
 
     public TagFetcher(String name){
         threadName = name;
@@ -37,7 +37,7 @@ public class TagFetcher implements Runnable {
                 tagList = restTemplate.getForObject(apiURL, TagList.class).getTags();
 
                 if(tagList==null){
-                    Thread.sleep(10 * 1000);
+                    Thread.sleep(8 * 1000);
                     misses = misses + 1;
                 }
                 else{

@@ -40,7 +40,7 @@ public class NewsDispatcher {
 
         if(result.get("isNews").toString().equals("yes")){
             System.out.println("Triggering news push");
-            String response = restTemplate.getForObject(Endpoints.getPusherUrl() + "?label={label}", String.class, label);
+            String response = restTemplate.getForObject(Endpoints.getPusherUrl() + "?label={label}&topic={topic}", String.class, label, result.get("topic"));
             System.out.println(response);
         }
 
