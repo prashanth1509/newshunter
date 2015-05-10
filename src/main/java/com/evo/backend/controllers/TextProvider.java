@@ -25,7 +25,7 @@ import java.util.Map;
 @RestController
 public class TextProvider {
 
-    private List<String> tags = Arrays.asList( "#blackandblue", "#BookBucketChallenge", "#catstairs", "#dubsmash", "#harlemshake", "#Ebola", "#Ferguson", "#Mission272", "#fifaWorldCup", "#Hololens" );
+    private List<String> tags = Arrays.asList( /*"#blackandblue", "#BookBucketChallenge", "#catstairs", "#dubsmash", "#harlemshake", "#Ebola", "#Ferguson", "#Mission272", "#fifaWorldCup",*/ "#Hololens" );
 
     @Autowired
     private NewsRepository newsRepository;
@@ -70,9 +70,9 @@ public class TextProvider {
         pushRepository.deleteAll();
         usersRepository.deleteAll();
 
-        News news = new News();
 
         for(String tag: tags){
+            News news = new News();
             news.setTag(tag);
             news.setContent("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.");
             news.setHeading(tag.toUpperCase().replace("#",""));
@@ -113,7 +113,7 @@ public class TextProvider {
         return result;
     }
 
-    @RequestMapping("/api/push")
+    @RequestMapping("/app/push")
     public Object push(
         @RequestParam(value = "label", required = true) String tagId
     ){
@@ -137,7 +137,7 @@ public class TextProvider {
         return "success";
     }
 
-    @RequestMapping("/api/news")
+    @RequestMapping("/app/news")
     public Object getNews(
         @RequestParam(value = "newsId", required = true) String newsId
     ) {
