@@ -39,6 +39,13 @@
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
 
+        <!-- google cloud push -->
+        <dependency>
+            <groupId>com.google.android.gcm</groupId>
+            <artifactId>gcm-server</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+
     </dependencies>
 
     <!-- Package as an executable JAR -->
@@ -50,5 +57,12 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>gcm-server-repository</id>
+            <url>https://raw.githubusercontent.com/slorber/gcm-server-repository/master/releases/</url>
+        </repository>
+    </repositories>
 
 </project>

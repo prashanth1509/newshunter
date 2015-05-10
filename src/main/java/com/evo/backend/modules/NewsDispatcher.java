@@ -36,8 +36,13 @@ public class NewsDispatcher {
         String json = mapper.writeValueAsString(this.news);
 
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(Endpoints.CLASSIFIER + "?label={label}&texts={json}", String.class, label, json);
-        System.out.println(result);
+        Map<String, String> result = restTemplate.getForObject(Endpoints.CLASSIFIER + "?label={label}&texts={json}", Map.class, label, json);
+
+        if(result.get("isNews").toString().equals("yes")){
+            System.out.println("Triggering news push");
+            restTemplate.getForObject(Endpoints.getPusherUrl() + "?label={label}", String.class, label);
+        }
+
     }
 
 }

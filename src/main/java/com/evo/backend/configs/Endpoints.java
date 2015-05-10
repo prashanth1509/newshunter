@@ -20,5 +20,8 @@ public class Endpoints {
         return Utils.isLocal()?"http://localhost:8087/twitter-api/getTexts":"https://sleepy-cliffs-3321.herokuapp.com/twitter-api/getTexts";
     }
 
+    public static String getPusherUrl(){
+        return Utils.isLocal()?"http://localhost:8087/twitter-api/push":"https://sleepy-cliffs-3321.herokuapp.com/twitter-api/push";
+    }
 
 }
